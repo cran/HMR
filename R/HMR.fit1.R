@@ -1,12 +1,12 @@
 .HMR.fit1<-function(tid,konc,A,V,serie,ngrid,SatPct,SatTimeMin,LR.always,FollowHMR,IfNoValidHMR,IfNoSignal,IfNoFlux,xtxt,ytxt,pcttxt,MSE.zero,bracketing.tol,bracketing.maxiter,kappa.fixed,pfvar,pfalpha,dec)
 {
-  ### Stikprøvestørrelse
+  ### Stikproevestoerrelse
   n<-length(konc)
 
-  ### Kammerets effektive højde
+  ### Kammerets effektive hoejde
   h<-V/A
 
-  ### Test for 'signal/støj' i data
+  ### Test for 'signal/stoej' i data
   if (is.na(pfvar)) {SIGNVAR<-TRUE; prefilter<-'None'; pfpval<-NA} else
   {
     pfpval<-1-pchisq(q=(n-1)*var(konc)/pfvar,df=n-1); SIGNVAR<-(pfpval<pfalpha)
@@ -33,7 +33,7 @@
     OK
   }
 
-  ## Min version af 'lsfit', der afslører 'collinearity', før det går galt.
+  ## Min version af 'lsfit', der afsloerer 'collinearity', foer det gaar galt.
   # Benytter den 'qr'-test, der benyttes som standard i R - f.eks. af 'lsfit'
   mylsfit<-function(x,y)
   {
@@ -91,14 +91,14 @@
     list(C0=C0,phi=phi,f0=f0,MSE=mean((konc-(dum[1]+dum[2]*x))^2))
   }
 
-  ### Undersøger, om HMR kan anvendes (code=1; ellers code=0), og afgrænser i givet fald de mulige kappa-værdier
+  ### Undersoeger, om HMR kan anvendes (code=1; ellers code=0), og afgraenser i givet fald de mulige kappa-vaerdier
   indramme<-function()
   {
-    ## Grænser betinget af R
+    ## Graenser betinget af R
     logkappa.lo<-log(max(.Machine$double.xmin/h,.Machine$double.xmin))
     logkappa.up<-log(min(.Machine$double.xmax/h,.Machine$double.xmax))
 
-    ## Forsøger at gætte en 'fredelig' midterværdi
+    ## Forsoeger at gaette en 'fredelig' midtervaerdi
     SUCCES<-TRUE
     logkappa.me<-log(1/max(tid))
     if (!testMSE(logkappa.me))
@@ -111,7 +111,7 @@
       }
     }
 
-    ## Fortsætter, hvis en midterværdi er fundet
+    ## Fortsaetter, hvis en midtervaerdi er fundet
     if (SUCCES)
     {
       # Finde 'kappa.lo'
@@ -121,7 +121,7 @@
         while ((iter<bracketing.maxiter)&(abs(logk1-logk2)>bracketing.tol)) {if (testMSE(logk)) {logk2<-logk} else {logk1<-logk}; logk<-(logk1+logk2)/2; iter<-iter+1}
         if (abs(logk1-logk2)<=bracketing.tol) {kappa.lo<-exp(logk2)} else {SUCCES<-FALSE; kappa.lo<-NA; kappa.up<-NA; code<-0}
       } else {kappa.lo<-exp(logkappa.lo)}
-      # Finde 'kappa.up', hvis søgningen efter 'kappa.lo' lykkedes
+      # Finde 'kappa.up', hvis soegningen efter 'kappa.lo' lykkedes
       if (SUCCES)
       {
         if (!testMSE(logkappa.up))
@@ -133,7 +133,7 @@
       }
     } else {kappa.lo<-NA; kappa.up<-NA; code<-0}
 
-    ## Justerer 'kappa.up' i tilfælde af bruger-afgrænsning af 'kappa'
+    ## Justerer 'kappa.up' i tilfaelde af bruger-afgraensning af 'kappa'
     if ((code>0)&(!is.na(SatPct)))
     {
       kappa.up.user<-log(100/(100-SatPct))/SatTimeMin
@@ -145,7 +145,7 @@
     list(kappa.lo=kappa.lo,kappa.up=kappa.up,code=code,SatCritActive=SatCritActive)
   }
 
-  ## Basal afgrænsning
+  ## Basal afgraensning
   ramme<-indramme()
 
   ## Ekstra test hvis 'ramme$code=1' - findes der valide HM-modeller?
@@ -167,7 +167,7 @@
   ## Hvis HMR kan anvendes
   if (ramme$code>0)
   {
-    # Global gittersøgning
+    # Global gittersoegning
     logkappa<-seq(log(ramme$kappa.lo),log(ramme$kappa.up),l=ngrid)
     vMSE<-rep(NA,ngrid); vcol<-rep(NA,ngrid)
     for (i in 1:ngrid)
@@ -176,12 +176,12 @@
       vMSE[i]<-dum$MSE
       if ((dum$C0<=0)|(dum$phi<=0)) {vcol[i]<-2} else {vcol[i]<-3}
     }
-    # Betinget gittersøgning
+    # Betinget gittersoegning
     dum<-1:length(vMSE); ok<-dum[vcol==3]; bmin.vMSE<-min(vMSE[ok])
     kand<-dum[ok][vMSE[ok]<=bmin.vMSE]
     if (length(kand)>1)
     {
-      # Best-in-grid estimatet er ikke entydigt bestemt; vælger største (~No flux) eller mindste (~LR) kandidat
+      # Best-in-grid estimatet er ikke entydigt bestemt; vaelger stoerste (~No flux) eller mindste (~LR) kandidat
       if (abs(vMSE[ok][1]-bmin.vMSE)<abs(vMSE[ok][length(vMSE[ok])]-bmin.vMSE)) {big<-kand[1]} else {big<-kand[length(kand)]}
     } else {big<-kand}
     logkappa.big<-logkappa[big]
@@ -229,7 +229,7 @@
 
     ## Valg af analyse
     if (FollowHMR)
-    { # Egne fund gemt i 'MSEoptimal' samt brugerens automatiske valg i 'IfNoSignal' og 'IfNoFlux' (hvis begge relevante, har 'IfNoSignal' højst prioritet)
+    { # Egne fund gemt i 'MSEoptimal' samt brugerens automatiske valg i 'IfNoSignal' og 'IfNoFlux' (hvis begge relevante, har 'IfNoSignal' hoejst prioritet)
       if (!SIGNVAR) {if (IfNoSignal=='LR') {dacode<-2} else {dacode<-3}} else
         if (MSEoptimal=='HMR') {dacode<-1} else if (MSEoptimal=='LR') {dacode<-2} else if ((IfNoFlux=='No flux')&(!ramme$SatCritActive)) {dacode<-3} else {dacode<-2}
     } else
@@ -305,7 +305,7 @@
     MSEoptimal<-'None'
     # Valg af analyse
     if (FollowHMR)
-    { # Brugeren har valgt i 'IfNoValidHMR' og 'IfNoSignal' (hvis begge relevante, har 'IfNoSignal' højst prioritet)
+    { # Brugeren har valgt i 'IfNoValidHMR' og 'IfNoSignal' (hvis begge relevante, har 'IfNoSignal' hoejst prioritet)
       if (SIGNVAR) {if (IfNoValidHMR=='LR') {dacode<-2} else {dacode<-3}} else
       {if (IfNoSignal=='LR') {dacode<-2} else {dacode<-3}}
     } else
@@ -463,7 +463,7 @@
     }
   } else {LR.f0<-NA; LR.f0.se<-NA; LR.f0.p<-NA; LR.f0.lo95<-NA; LR.f0.up95<-NA; LR.advarsel<-NA}
 
-  ### Kommentar vedr. mætningskriteriet ('No flux' gælder ikke, hvis 'SatCritActive')
+  ### Kommentar vedr. maetningskriteriet ('No flux' gaelder ikke, hvis 'SatCritActive')
   if (is.na(SatPct)) {SatCritWarning<-NA} else
     if ((MSEoptimal=='No flux')&(ramme$SatCritActive))
     {

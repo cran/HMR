@@ -2,27 +2,27 @@
 {
   ## Input
   ## -----
-  ## filename: En tekststreng indeholdende filnavnet. Det forudsættes, at datamappen i forvejen er sat med 'setwd'.
-  ##           Datafilen skal være organiseret i fem kolonner og opfylde flg. betingelser:
+  ## filename: En tekststreng indeholdende filnavnet. Det forudsaettes, at datamappen i forvejen er sat med 'setwd'.
+  ##           Datafilen skal vaere organiseret i fem kolonner og opfylde flg. betingelser:
   ##
-  ##           1. Indholdet af 1. række ignoreres - kan evt. bruges til variabelnavne eller anden hjælpetekst.
+  ##           1. Indholdet af 1. raekke ignoreres - kan evt. bruges til variabelnavne eller anden hjaelpetekst.
   ##           2. Kolonnerne indeholder (1.-5.):
   ##                - Serienavn (tekststreng)
   ##                - Kammerets volumen
-  ##                - Kammerets tværsnitsareal
-  ##                - Prøvetagningstidspunkterne
-  ##                - Målte koncentrationer
-  ##           3. Serienavnet identificerer den enkelte dataserie, så forskellige dataserier SKAL have forskellige
+  ##                - Kammerets tvaersnitsareal
+  ##                - Proevetagningstidspunkterne
+  ##                - Maalte koncentrationer
+  ##           3. Serienavnet identificerer den enkelte dataserie, saa forskellige dataserier SKAL have forskellige
   ##              serienavne. Volumen og areal skal indeholde positive tal, der er konstante indenfor den enkelte
-  ##              dataserie. Indholdet af kolonne 1-3 er altså konstant indenfor serienavn. Prøvetagningstidspunkterne
-  ##              skal være (strengt) stigende tal, og det første tidspunkt skal være nul. De målte koncentrationer skal
-  ##              være positive tal, og manglende værdier er ikke tilladte.
+  ##              dataserie. Indholdet af kolonne 1-3 er altsaa konstant indenfor serienavn. Proevetagningstidspunkterne
+  ##              skal vaere (strengt) stigende tal, og det foerste tidspunkt skal vaere nul. De maalte koncentrationer skal
+  ##              vaere positive tal, og manglende vaerdier er ikke tilladte.
   ##           4. Der stilles ingen krav til fysiske enheder.
   ##
   ## dec     : Decimaltegn.
-  ## sep     : Søjleseparator.
+  ## sep     : Soejleseparator.
 
-  ## Den basale indlæsning vha. 'read.table'
+  ## Den basale indlaesning vha. 'read.table'
   ## ---------------------------------------
   Rdata<-try(read.table(file=filename,header=FALSE,skip=1,blank.lines.skip=TRUE,
   dec=dec,sep=sep,col.names=c('serie','V','A','tid','konc'),
@@ -39,16 +39,16 @@
   ##   2. Mindst 3 obs. af 'V', 'A', 'tid' og 'konc' indenfor 'serie'
   ##   3. Ingen 'NA' i 'V', 'A', 'tid' eller 'konc'
   ##   4. Ingen 'Inf' eller '-Inf' i 'V', 'A', 'tid' eller 'konc'
-  ##   5. Ingen negative værdier i 'V', 'A' eller 'konc'
-  ##   6. Værdierne af 'tid' skal være positive og stigende
+  ##   5. Ingen negative vaerdier i 'V', 'A' eller 'konc'
+  ##   6. Vaerdierne af 'tid' skal vaere positive og stigende
   FATAL<-FALSE
   if (inherits(Rdata,'try-error'))
   {
-    # Elementære datafejl
+    # Elementaere datafejl
     FATAL<-TRUE; HMRdata<-NA; nserie<-NA
   } else
   {
-    # Ingen elementære datafejl
+    # Ingen elementaere datafejl
     serie<-Rdata$serie; userie<-unique(serie); nserie<-length(userie)
     V<-Rdata$V
     A<-Rdata$A
@@ -64,7 +64,7 @@
       iV<-V[serie==userie[i]]
       iA<-A[serie==userie[i]]
       serieOK<-TRUE
-      # Mere end ét 'V' eller 'A'
+      # Mere end eet 'V' eller 'A'
       if ((length(unique(iV))>1)|(length(unique(iA))>1)) {serieOK<-FALSE} else
       {
         # Mindre end 3 obs.
@@ -76,7 +76,7 @@
             # 'Inf' eller '-Inf' i numeriske variable
             if ((max(abs(itid))==Inf)|(max(abs(ikonc))==Inf)|(max(abs(iV))==Inf)|(max(abs(iA))==Inf)) {serieOK<-FALSE} else
             {
-              # Ikke-positive værdier af 'V', 'A', 'konc' eller 'tid'
+              # Ikke-positive vaerdier af 'V', 'A', 'konc' eller 'tid'
               if ((min(iV)<=0)|(min(iA)<=0)|(min(ikonc)<=0)|(min(itid)<0)) {serieOK<-FALSE} else
               {
                 # 'tid' er ikke-stigende
