@@ -286,7 +286,7 @@ The data frame is also exported to a semicolon/comma separated file with the nam
 The exported file uses the same column and decimal separators as the data file.
 }
 
-\author{Asger R. Pedersen, Ph.D. in statistics, University Research Clinic for Innovative Patient Pathways, Aarhus University, Diagnostic Centre, Silkeborg Regional Hospital}
+\author{Asger R. Pedersen, Ph.D. in statistics, SEGES Innovation, Aarhus, Denmark}
 
 \references{
 Hutchinson, G.L. and Mosier, A.R. (1981). Improved soil cover method for field measurement of nitrous oxide fluxes.
