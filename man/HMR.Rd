@@ -168,8 +168,8 @@ precedence over \code{IfNoValidHMR} and \code{IfNoFlux} when relevant, and that 
 user specfified maximal value of \eqn{\kappa} (whereby the MSE criterion recommends \code{'No flux'}). \emph{The automatic HMR decision tree with
 option \code{FollowHMR=TRUE} is illustrated in the figure below (only visible with HTML help, \code{help(HMR,help_type='html')}, and in the PDF
 manual).}
-\if{html}{\figure{HMRtree.png}{options: width="70\%" alt="Figure: HMRtree.png"}}
-\if{latex}{\figure{HMRtree.pdf}{options: width=14cm}}
+\if{html}{\figure{HMRtree.png}{options: width=1280 height=720 alt="Figure: HMRtree.png"}}
+\if{latex}{\figure{HMRtree.pdf}{options: width=1280px height=720px}}
 } % HMR automatic selection of analysis
 
 \subsection{HMR data processing order}{

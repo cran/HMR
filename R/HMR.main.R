@@ -1,6 +1,6 @@
 HMR<-function(filename,series=NA,dec='.',sep=';',SatPct=NA,SatTimeMin=NA,pfvar=NA,pfalpha=0.05,LR.always=FALSE,FollowHMR=FALSE,IfNoValidHMR='No flux',IfNoFlux='No flux',IfNoSignal='No flux')
 {
-  ## Version 1.0.3 starter med denne besked
+  ## Starter med denne besked
   HMRmessage<-function()
   {
     cat('\n')
@@ -8,8 +8,6 @@ HMR<-function(filename,series=NA,dec='.',sep=';',SatPct=NA,SatTimeMin=NA,pfvar=N
     cat('but by the X11() GUI. Interactive mode is also supported by the standard R GUI.\n')
     cat('\n')
   }
-
-  ## Besked om version 1.0.3
   HMRmessage(); flush.console()
 
   ## Input
